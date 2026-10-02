@@ -1,0 +1,8 @@
+node_modules/
+dist/
+out-tsc/
+test-output/
+*.tsbuildinfo
+.vite/
+npm-debug.log*
+.DS_Store

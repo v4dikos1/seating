@@ -1,0 +1,993 @@
+/* ------------------------------------------------------------- КОНФИГУРАТОР ЗАЛОВ (STUDIO EDITOR) */
+
+/*
+ * Каркас конфигуратора занимает ровно высоту окна. Это не украшение: без него
+ * прокручивается весь документ вместе с шапкой и палитрой, боковые панели перестают
+ * прокручиваться сами, а холст растягивается на высоту самой длинной панели.
+ */
+.editor-shell {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* Studio Topbar */
+.editor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px;
+  min-height: 56px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-xs);
+  z-index: 20;
+  gap: 12px;
+  min-width: 0;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+.editor-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex-shrink: 1;
+}
+.editor-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+}
+.editor-title-wrap b {
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240px;
+}
+
+.editor-bar-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--line-subtle);
+  border: 1px solid var(--line);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.editor-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Studio Layout 3-Columns */
+.editor-body {
+  display: grid;
+  grid-template-columns: 296px minmax(0, 1fr) 336px;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left & Right Panels */
+.editor-left, .editor-right {
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  padding: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 10;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+.editor-right {
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+
+/*
+ * В боковой колонке от этажа остаётся только выбор и кнопка мастера: раньше панель
+ * подложки занимала колонку целиком и выталкивала список зон за пределы окна.
+ */
+.floor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.floor-panel-title {
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .55px;
+  text-transform: uppercase;
+}
+.floor-panel select,
+.floor-panel input:not([type='file']) {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 9px;
+}
+.floor-panel-create,
+.floor-calibration-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.floor-panel-create input { flex: 1; width: 1px; }
+.floor-panel-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  min-width: 0;
+}
+.floor-panel-summary span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.floor-upload {
+  justify-content: center;
+  cursor: pointer;
+}
+.floor-upload input { display: none; }
+.floor-pdf-meta,
+.floor-calibration-help,
+.floor-points,
+.floor-page {
+  color: var(--ink-secondary);
+  font-size: 12px;
+}
+.floor-pdf-meta { overflow-wrap: anywhere; }
+.floor-calibration-help { line-height: 1.45; margin: 2px 0 0; }
+.floor-error { color: var(--danger); font-size: 12px; margin: 0; }
+
+/* ---- Мастер подложки этажа ---- */
+
+.bg-wizard-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.bg-wizard-step {
+  border: 1px solid var(--line);
+  background: var(--card-subtle);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.bg-wizard-step b {
+  font-size: 12.5px;
+  color: var(--ink);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bg-wizard-step.on {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+}
+.bg-wizard-step.on b { color: var(--primary); }
+.bg-wizard-step:disabled { opacity: .5; cursor: not-allowed; }
+.bg-wizard-step-index {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  font-weight: 650;
+}
+
+.bg-stage {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 260px;
+}
+.bg-stage canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 58vh;
+  cursor: crosshair;
+}
+.bg-stage-hint {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #ffffff;
+  font-size: 11.5px;
+  border-radius: var(--radius-sm);
+  padding: 4px 9px;
+  pointer-events: none;
+}
+.bg-points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.bg-point {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.bg-point b {
+  color: var(--ink);
+  font-size: 12px;
+  display: block;
+}
+.bg-point-mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.bg-check {
+  display: grid;
+  gap: 8px;
+  background: var(--card-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+.bg-check div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 12.5px;
+}
+.bg-check dt, .bg-check span:first-child { color: var(--ink-secondary); }
+.bg-check b { color: var(--ink); font-weight: 600; }
+
+/* Studio Tool Dock & Palette */
+.tool-palette {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--line-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  gap: 4px;
+}
+.tool-btn, .tool-dock-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ink-secondary);
+  border-radius: var(--radius-md);
+  padding: 8px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.tool-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  display: block;
+}
+.tool-btn:hover, .tool-dock-btn:hover {
+  background: var(--card);
+  color: var(--ink);
+}
+.tool-btn.active, .tool-dock-btn.on {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(255, 92, 57, 0.35);
+}
+.tool-hotkey, .tool-dock-btn kbd {
+  font-family: inherit;
+  font-size: 9px;
+  opacity: 0.7;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 4px;
+  line-height: 1.2;
+}
+
+/* Tool options panel */
+.tool-options-panel {
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.tool-options-hint {
+  font-size: 11px;
+  color: var(--primary);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* Zone List in Left Panel */
+.zone-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+.zone-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.zone-list-head h3 {
+  font-size: 13px;
+  font-weight: 650;
+}
+.zone-list-search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  padding: 7px 10px;
+}
+.zone-kind {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--ink-muted);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  padding: 0 4px;
+  line-height: 15px;
+  flex-shrink: 0;
+}
+.zone-warn {
+  color: var(--warning);
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.zone-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.zone {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: all 0.12s ease;
+}
+.zone:hover {
+  background: var(--card-subtle);
+  border-color: var(--line-strong);
+}
+.zone.on {
+  background: var(--primary-light);
+  border-color: var(--primary-border);
+}
+.zone-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.zone-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.zone-name b {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.zone-name em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+.zone-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.zone-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+/* Canvas Viewport */
+.editor-canvas {
+  min-width: 0;
+  position: relative;
+  background-color: var(--canvas-bg);
+  background-image: radial-gradient(var(--canvas-grid) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+  overflow: hidden;
+}
+.editor-canvas canvas {
+  display: block;
+}
+
+/*
+ * Зоны накладок холста разведены, чтобы они не налезали друг на друга:
+ * слева сверху — сообщения, справа сверху — панель вида и легенда под ней,
+ * слева снизу — строка состояния, по центру снизу — действия над выделением.
+ */
+.canvas-hud {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: calc(100% - 36px);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  z-index: 12;
+}
+.canvas-hud-btn {
+  border: 0;
+  background: transparent;
+  color: var(--ink-secondary);
+  border-radius: var(--radius-md);
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+.canvas-hud-btn:hover {
+  background: var(--card-subtle);
+  color: var(--ink);
+}
+.canvas-hud-btn.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+/* Счётчик находок проверки: уровень виден до открытия отчёта. */
+.canvas-hud-btn.warn {
+  background: var(--warning-light);
+  color: #92400e;
+}
+.canvas-hud-btn.danger {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+.canvas-hud-btn.warn .canvas-hud-value,
+.canvas-hud-btn.danger .canvas-hud-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Selection Floating Action Bar */
+.canvas-selection-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 36px);
+  white-space: nowrap;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  box-shadow: var(--shadow-float);
+  z-index: 25;
+  animation: slideUp 0.15s ease-out;
+  scrollbar-width: none;
+  box-sizing: border-box;
+}
+.canvas-selection-bar::-webkit-scrollbar {
+  display: none;
+}
+.canvas-selection-meta {
+  font-size: 12.5px;
+  font-weight: 550;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.canvas-selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: 10px;
+}
+.canvas-selection-bar .btn-studio {
+  background: rgba(255, 255, 255, 0.14);
+  border: 0;
+  color: #ffffff;
+}
+.canvas-selection-bar .btn-studio:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.24);
+}
+.canvas-selection-bar .btn-studio.danger {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+.canvas-selection-bar .btn-studio.danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.45);
+  color: #ffffff;
+}
+
+/* Меню «ещё» панели выделения: лишние действия не превращаются в прокрутку */
+.canvas-more {
+  position: relative;
+}
+.canvas-more-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  min-width: 190px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-float);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 30;
+}
+.canvas-more-menu button {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--ink);
+  text-align: left;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.canvas-more-menu button:hover {
+  background: var(--card-hover);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Seat Legend Overlay Card — выпадает из панели вида, поэтому живёт под ней */
+.seat-legend-card {
+  position: absolute;
+  right: 18px;
+  top: 64px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 12px 14px;
+  width: 250px;
+  max-width: calc(100% - 36px);
+  max-height: calc(100% - 140px);
+  overflow-y: auto;
+  z-index: 20;
+  animation: scaleUp 0.15s ease-out;
+  box-sizing: border-box;
+}
+.seat-legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line-subtle);
+  padding-bottom: 6px;
+}
+.seat-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.seat-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.seat-legend-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.seat-legend-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.seat-legend-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.seat-legend-desc {
+  font-size: 10px;
+  color: var(--ink-secondary);
+  line-height: 1.2;
+}
+
+/* Empty State Card */
+.empty-state-card {
+  background: var(--card-subtle);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.empty-state-card p {
+  font-size: 12.5px;
+  color: var(--ink);
+  margin: 0;
+}
+.empty-state-card span {
+  font-size: 11px;
+  color: var(--ink-muted);
+  line-height: 1.35;
+}
+
+/* Что выбрано сейчас: шапка правой панели */
+.inspector-context {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card-subtle);
+  font-size: 12px;
+  color: var(--ink-secondary);
+  min-width: 0;
+}
+.inspector-context b {
+  color: var(--ink);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Сворачиваемая секция инспектора */
+.inspector-section {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+.inspector-section > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.inspector-section > summary::-webkit-details-marker { display: none; }
+.inspector-section > summary::after {
+  content: '';
+  margin-left: auto;
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid var(--ink-muted);
+  border-bottom: 1.5px solid var(--ink-muted);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 0.15s ease;
+}
+.inspector-section[open] > summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+.inspector-section > summary:hover { background: var(--card-subtle); }
+.inspector-section-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.inspector-section-body {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--line-subtle);
+  padding-top: 14px;
+}
+.inspector-section .inspector-panel {
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+/* Заголовок секции уже назван в summary — внутри панель его не повторяет. */
+.inspector-section .inspector-panel > .inspector-panel-head {
+  border-bottom: 0;
+  padding-bottom: 0;
+  justify-content: flex-end;
+  margin-top: -6px;
+}
+.inspector-section .inspector-panel > .inspector-panel-head h3 {
+  display: none;
+}
+
+/* Right Inspector Panels */
+.inspector-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-xs);
+}
+.inspector-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--line-subtle);
+  padding-bottom: 10px;
+}
+.inspector-panel-head h3 {
+  font-size: 13.5px;
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.inspector-note {
+  font-size: 12px;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+}
+
+/* Property Inheritance Segment Selectors */
+.prop-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.prop-selector-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+}
+.prop-selector-status {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.prop-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: 4px;
+  background: var(--line-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 3px;
+}
+.prop-option-btn {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prop-option-btn:hover {
+  color: var(--ink);
+}
+.prop-option-btn.active {
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: var(--shadow-xs);
+}
+.prop-option-btn.active-custom {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(255, 92, 57, 0.35);
+}
+
+.numbering-box {
+  background: var(--card-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/*
+ * Сообщения конфигуратора плавают над холстом слева сверху и не участвуют в потоке:
+ * появление ошибки не смещает ни панели, ни холст.
+ */
+/*
+ * Сообщения идут строкой ниже панели вида, а не рядом с ней: ширина панели зависит
+ * от того, есть ли подложка, и «оставить ей места справа» на узком холсте не выходит.
+ */
+.canvas-alerts {
+  position: absolute;
+  left: 18px;
+  top: 64px;
+  width: min(520px, calc(100% - 290px));
+  max-height: calc(100% - 170px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 30;
+  pointer-events: none;
+}
+.canvas-alert {
+  position: relative;
+  pointer-events: auto;
+  animation: scaleUp 0.15s ease-out;
+}
+.canvas-alert .alert,
+.canvas-alert .note {
+  margin: 0;
+  box-shadow: var(--shadow-lg);
+  padding-right: 40px;
+}
+.canvas-alert-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+/* Сообщение без кнопки закрытия не резервирует под неё место. */
+.canvas-alert-plain .note {
+  padding-right: 16px;
+}
+
+/* Строка состояния холста: масштаб, курсор и размер активной зоны */
+.canvas-status {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  padding: 5px 12px;
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  z-index: 11;
+  max-width: calc(100% - 36px);
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.canvas-status b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.canvas-status-sep {
+  width: 1px;
+  height: 12px;
+  background: var(--line);
+  flex-shrink: 0;
+}

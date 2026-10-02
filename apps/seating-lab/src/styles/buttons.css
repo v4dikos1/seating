@@ -1,0 +1,146 @@
+/* ------------------------------------------------------------- КНОПКИ (BUTTONS) */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+}
+.btn:hover:not(:disabled) {
+  background: var(--card-hover);
+  border-color: var(--line-strong);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button Variants */
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgba(255, 92, 57, 0.35);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 2px 6px 0 rgba(255, 92, 57, 0.45);
+}
+.btn-primary:active:not(:disabled) {
+  background: var(--primary-active);
+}
+
+.btn-secondary {
+  background: var(--card);
+  border-color: var(--line);
+  color: var(--ink);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--card-hover);
+  border-color: var(--line-strong);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-secondary);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: rgba(15, 23, 42, 0.05);
+  color: var(--ink);
+}
+
+.btn-danger {
+  color: var(--danger);
+  border-color: var(--danger-border);
+  background: var(--danger-light);
+}
+.btn-danger:hover:not(:disabled) {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.btn-planned {
+  border-style: dashed;
+  border-color: var(--warning-border);
+  color: var(--warning);
+  background: var(--warning-light);
+  cursor: not-allowed;
+}
+
+.btn-studio {
+  padding: 6px 10px;
+  font-size: 12px;
+  height: 32px;
+}
+
+.btn-icon-only {
+  padding: 7px;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  color: var(--ink-secondary);
+}
+.btn-icon-only:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.icon {
+  border: 0;
+  background: transparent;
+  color: var(--ink-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s ease;
+}
+.icon:hover {
+  background: var(--card-hover);
+  color: var(--ink);
+}
+
+.link {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.12s ease;
+}
+.link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}

@@ -1,0 +1,44 @@
+:root {
+  --warn-bg: #b45309;
+  --warn-ink: #fffbeb;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.webview-host-banner {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  padding: 6px 12px;
+}
+
+.webview-host-widget {
+  position: fixed;
+  inset: 0;
+  /* Высота баннера предупреждения выше: страница не скроллится, iframe занимает остаток. */
+  top: 30px;
+}
+
+.webview-host-widget iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

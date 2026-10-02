@@ -1,0 +1,58 @@
+syntax = "proto3";
+package tomcell.seating.v4;
+
+// Форма сообщений повторяет JSON-контракт зоны из API: устойчивые ключи строками,
+// категориальные значения строками, координаты абсолютны. Сервер этот формат не отдаёт.
+// Общие свойства объявляются уровнем; отсутствие поля означает наследование, поэтому
+// все три поля объявлены optional — присутствие значения здесь несёт смысл.
+message Properties {
+  optional string accessibility = 1;
+  optional string viewObstruction = 2;
+  optional bool sellable = 3;
+}
+message Position {
+  string id = 1;
+  string label = 2;
+  sint32 x = 3;
+  sint32 y = 4;
+  uint32 rotation = 5;
+  optional Properties properties = 6;
+}
+message Row {
+  string id = 1;
+  string label = 2;
+  repeated Position positions = 3;
+  optional Properties properties = 4;
+}
+message Table {
+  string id = 1; string label = 2; sint32 x = 3; sint32 y = 4; uint32 rotation = 5;
+  uint32 capacity = 6; string saleMode = 7; uint32 minimumQuantity = 8; optional Properties properties = 9;
+  repeated Position positions = 10;
+}
+message ZoneGeometry {
+  string code = 1;
+  string name = 2;
+  string color = 3;
+  sint32 x = 4;
+  sint32 y = 5;
+  uint32 width = 6;
+  uint32 height = 7;
+  repeated Row rows = 8;
+  string kind = 9;
+  uint32 capacity = 10;
+  optional Properties properties = 11;
+  repeated Table tables = 12;
+}
+message SceneZone {
+  string zoneId = 1;
+  uint64 zoneVersion = 2;
+  ZoneGeometry geometry = 3;
+  uint64 compositionVersion = 4;
+}
+message Scene {
+  uint32 formatVersion = 1;
+  string configurationId = 2;
+  uint64 revision = 3;
+  repeated SceneZone zones = 4;
+  optional Properties properties = 5;
+}

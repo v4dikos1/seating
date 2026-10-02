@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Тестовая оплата — TomCell Studio</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/shared/mock-payment-panel.css" />
+  </head>
+  <body>
+    <!--
+      Отдельная стендовая страница для случая, когда paymentPageUrl открыт вне виджета
+      (Backend Development-конфигурация в этом случае и отдаёт этот адрес: см. README).
+      Вход — тот же механизм, что у остального стенда (app/auth.tsx): нужен токен покупателя,
+      которому принадлежит попытка оплаты.
+    -->
+    <div id="root"></div>
+    <script type="module" src="/src/mock-payment/main.tsx"></script>
+  </body>
+</html>

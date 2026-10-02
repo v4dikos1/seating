@@ -1,0 +1,37 @@
+[
+  {
+    "name": "overlapping seats",
+    "zones": [
+      { "zoneId": "00000000-0000-0000-0000-000000000001", "floorId": "00000000-0000-0000-0000-000000000010", "code": "A", "x": 0, "y": 0, "width": 1000, "height": 1000,
+        "rows": [{ "label": "1", "positions": [{ "label": "1", "x": 100, "y": 100 }, { "label": "2", "x": 300, "y": 100 }] }] }
+    ],
+    "expectedCodes": ["SeatsOverlap"]
+  },
+  {
+    "name": "crossing rows",
+    "zones": [
+      { "zoneId": "00000000-0000-0000-0000-000000000002", "floorId": "00000000-0000-0000-0000-000000000010", "code": "B", "x": -1000, "y": -1000, "width": 2000, "height": 2000,
+        "rows": [
+          { "label": "A", "positions": [{ "label": "1", "x": -500, "y": 0 }, { "label": "2", "x": 500, "y": 0 }] },
+          { "label": "B", "positions": [{ "label": "1", "x": 0, "y": -500 }, { "label": "2", "x": 0, "y": 500 }] }
+        ] }
+    ],
+    "expectedCodes": ["RowsCross"]
+  },
+  {
+    "name": "overlapping zone frames",
+    "zones": [
+      { "zoneId": "00000000-0000-0000-0000-000000000003", "floorId": "00000000-0000-0000-0000-000000000010", "code": "C", "x": 0, "y": 0, "width": 1000, "height": 1000, "rows": [] },
+      { "zoneId": "00000000-0000-0000-0000-000000000004", "floorId": "00000000-0000-0000-0000-000000000010", "code": "D", "x": 500, "y": 500, "width": 1000, "height": 1000, "rows": [] }
+    ],
+    "expectedCodes": ["EmptyZone", "ZonesOverlap"]
+  },
+  {
+    "name": "different floor frames",
+    "zones": [
+      { "zoneId": "00000000-0000-0000-0000-000000000005", "floorId": "00000000-0000-0000-0000-000000000010", "code": "E", "x": 0, "y": 0, "width": 1000, "height": 1000, "rows": [] },
+      { "zoneId": "00000000-0000-0000-0000-000000000006", "floorId": "00000000-0000-0000-0000-000000000011", "code": "F", "x": 0, "y": 0, "width": 1000, "height": 1000, "rows": [] }
+    ],
+    "expectedCodes": ["EmptyZone"]
+  }
+]

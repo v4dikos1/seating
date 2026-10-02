@@ -1,0 +1,38 @@
+/* ------------------------------------------------------------- ИНЖЕНЕРНАЯ ПАНЕЛЬ (DEV DRAWER) */
+
+.drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 540px;
+  max-width: 94vw;
+  background: var(--card);
+  border-left: 1px solid var(--line);
+  box-shadow: var(--shadow-float);
+  display: flex;
+  flex-direction: column;
+  z-index: 60;
+  animation: slideInRight 0.2s ease-out;
+}
+.drawer header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.drawer-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+.drawer-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}

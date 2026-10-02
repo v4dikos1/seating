@@ -1,0 +1,32 @@
+.configurator-calibration-method,
+.configurator-calibration-fields,
+.configurator-rotation-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.configurator-field {
+  display: grid;
+  gap: 5px;
+  max-width: 260px;
+}
+
+.configurator-rotation-controls {
+  display: grid;
+  gap: 7px;
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid var(--border, #dbe2ea);
+  border-radius: 8px;
+}
+
+.configurator-rotation-controls input[type='range'] { width: 100%; }
+.configurator-align-line { display: flex; align-items: center; gap: 7px; }
+.configurator-scale-caption { color: #334155; font-size: 13px; }
+.configurator-rotation-preview { display: grid; gap: 6px; margin-bottom: 12px; font-size: 13px; }
+.configurator-rotation-preview canvas { display: block; width: 100%; max-height: 250px; object-fit: contain; background: white; border: 1px solid #dbe2ea; }
+.configurator-calibration-tip { margin: 8px 0 0; font-size: 12px; color: #64748b; }
+.configurator-calibration-tip button { border: 0; background: transparent; color: #2563eb; text-decoration: underline; cursor: pointer; padding: 2px 0; }

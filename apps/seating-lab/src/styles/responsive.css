@@ -1,0 +1,95 @@
+/* ------------------------------------------------------------- АДАПТИВНОСТЬ (MEDIA QUERIES) */
+
+@media (max-width: 1360px) {
+  .editor-body {
+    grid-template-columns: 268px minmax(0, 1fr) 312px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .editor-body {
+    grid-template-columns: 244px minmax(0, 1fr) 288px;
+  }
+  /* Узкое окно: подписи кнопок панели вида уступают место значкам. */
+  .canvas-hud-btn span:not(.canvas-hud-value) {
+    display: none;
+  }
+  .canvas-alerts {
+    width: min(420px, calc(100% - 36px));
+  }
+  .canvas-status {
+    font-size: 11px;
+    gap: 7px;
+  }
+}
+
+@media (max-width: 960px) {
+  .shell {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  .shell > .content {
+    overflow-y: visible;
+  }
+  .side {
+    flex-direction: row;
+    overflow-y: visible;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+  }
+  .side-brand {
+    width: 100%;
+  }
+  .side-roles {
+    order: 2;
+  }
+  .menu {
+    flex-direction: row;
+    order: 3;
+  }
+  .side-foot {
+    margin-left: auto;
+    border-top: 0;
+    padding-top: 0;
+    flex-direction: row;
+    order: 4;
+  }
+  .content {
+    padding: 24px 20px 60px;
+  }
+  /*
+   * Три колонки в одну: тело конфигуратора снова становится прокручиваемым,
+   * но прокрутка остаётся внутри него, а не уезжает в документ.
+   */
+  .editor-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(360px, 1fr) auto;
+    overflow-y: auto;
+  }
+  .editor-left, .editor-right {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    overflow: visible;
+  }
+  .editor-canvas {
+    min-height: 360px;
+  }
+  .canvas-alerts {
+    width: calc(100% - 36px);
+  }
+  .canvas-status {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

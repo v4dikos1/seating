@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Схема зала — WebView (тестовый режим)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/src/webview-host/webview-host.css" />
+  </head>
+  <body>
+    <!--
+      Статическая страница-хост для мобильного WebView (Flutter/React Native): она не встроена
+      сама в чужой iframe, а держит iframe виджета внутри себя и пробрасывает сообщения нативной
+      стороне через native-bridge.ts. Тестовый режим — токен покупателя приходит сообщением от
+      нативного приложения, короткоживущей сессии встраивания и allowlist происхождения ещё нет
+      (артефакт 20 §6.1). В продакшен эту страницу включать нельзя.
+    -->
+    <div class="webview-host-banner" role="alert">
+      Тестовый режим встраивания — сессии, allowlist и CSP ещё нет. Не использовать в продакшене.
+    </div>
+    <div id="widget-root" class="webview-host-widget"></div>
+    <script type="module" src="/src/webview-host/main.ts"></script>
+  </body>
+</html>

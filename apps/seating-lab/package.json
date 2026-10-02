@@ -1,0 +1,19 @@
+{
+  "name": "@tickets/seating-lab",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@tickets/seating": "0.0.1",
+    "lucide-react": "^1.14.0",
+    "pdfjs-dist": "^6.3.289"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:site": "vite --port 4300 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc -b .",
+    "lint": "eslint ."
+  }
+}

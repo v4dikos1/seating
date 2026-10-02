@@ -1,0 +1,97 @@
+/* ------------------------------------------------------------- СИМУЛЯТОР ВИТРИНЫ (SHOWCASE) */
+
+.showcase-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-xs);
+}
+.showcase-viewport-picker {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.showcase-frame-container {
+  display: flex;
+  justify-content: center;
+  background: #e2e8f0;
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.25s ease;
+}
+.showcase-device {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--line);
+  transition: width 0.25s ease;
+}
+.showcase-device.desktop { width: 100%; max-width: 1200px; }
+.showcase-device.tablet { width: 768px; }
+.showcase-device.mobile { width: 375px; }
+
+.showcase-device iframe {
+  display: block;
+  width: 100%;
+}
+
+.showcase-side {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+.embed-code-box {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 0 0 12px;
+}
+
+/* ------------------------------------------------------------- ДОРОЖНАЯ КАРТА (ROADMAP) */
+
+.roadmap {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.roadmap li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  box-shadow: var(--shadow-xs);
+  transition: border-color 0.15s ease;
+}
+.roadmap li:hover {
+  border-color: var(--line-strong);
+}
+.roadmap b {
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.roadmap p {
+  color: var(--ink-secondary);
+  font-size: 13px;
+  margin-top: 6px;
+  max-width: 85ch;
+}

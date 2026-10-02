@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Тестовый сайт — встраивание виджета продаж</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/src/site-host/site-host.css" />
+  </head>
+  <body>
+    <!--
+      Страница изображает сторонний сайт, который встраивает виджет продаж iframe'ом через SDK
+      хоста (`mountSeatingWidget`, артефакт 20 §6.1). Запускается на другом origin, чем сам
+      виджет (второй экземпляр стенда на порту 4300, см. README), чтобы проверять настоящее
+      кросс-доменное встраивание: postMessage с конкретным origin, автоподстройку высоты iframe,
+      события брони и покупки. Тестовый режим: токен покупателя вставляется вручную в панель
+      стенда; сессии встраивания, allowlist и CSP ещё нет. В продакшен страницу не включать.
+    -->
+    <div class="site-banner" role="alert">
+      Тестовый сайт встраивания — токен вводится вручную, сессии, allowlist и CSP ещё нет.
+    </div>
+    <header class="site-header">
+      <span class="site-logo">Концертный зал «Тест»</span>
+      <nav class="site-nav"><span>Афиша</span><span>О зале</span><span>Контакты</span></nav>
+    </header>
+    <main class="site-main">
+      <section class="site-event">
+        <h1 id="event-title">Выбор мест</h1>
+        <p class="site-lead">
+          Так покупатель видит виджет на сайте организатора: схема и оплата живут во встроенном
+          фрейме, а сайт получает события брони и покупки.
+        </p>
+      </section>
+
+      <details class="site-panel" open>
+        <summary>Параметры встраивания (только для теста)</summary>
+        <form id="embed-form" class="site-form">
+          <label>
+            <span>Показ (UUID)</span>
+            <input name="occurrenceId" required spellcheck="false" autocomplete="off" />
+          </label>
+          <label>
+            <span>Адрес API</span>
+            <input name="apiRoot" required spellcheck="false" autocomplete="off" />
+          </label>
+          <label>
+            <span>Адрес виджета</span>
+            <input name="widgetUrl" required spellcheck="false" autocomplete="off" />
+          </label>
+          <label class="site-form-wide">
+            <span>Токен покупателя (access token; пусто — только просмотр схемы)</span>
+            <input name="token" type="password" spellcheck="false" autocomplete="off" />
+          </label>
+          <div class="site-form-actions">
+            <button type="submit">Встроить виджет</button>
+            <button type="button" id="update-token">Обновить токен без перезагрузки</button>
+          </div>
+        </form>
+      </details>
+
+      <div id="widget-root" class="site-widget"></div>
+
+      <section class="site-log">
+        <h2>События виджета на стороне сайта</h2>
+        <ol id="event-log"></ol>
+      </section>
+    </main>
+    <script type="module" src="/src/site-host/main.ts"></script>
+  </body>
+</html>
